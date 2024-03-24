@@ -2,4 +2,13 @@
     <div class="container">
         <a class="navbar-brand" href="/">My Django Blog 2.0</a>
         </div>
+<div class="px-4">
+    {% if user.is_authenticated %}
+        <li>
+            <a href="{{ user.profile.get_absolute_url }}">
+            <img class="rounded-circle" height="35" width="35" src="{{ user.profile.avatar.url }}"/>
+            </a>
+        </li>
+    {% endif %}
+</div>
 </nav>
