@@ -12,7 +12,7 @@ from apps.services.utils import unique_slugify
 
 class PostManager(models.Manager):
     def get_queryset(self):
-        return super().get_queryset().select_related('author', 'category', 'updater', ).filter(status='published')
+        return super().get_queryset().select_related('author', 'category', ).filter(status='published')
 
 
 class Post(models.Model):

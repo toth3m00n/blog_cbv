@@ -6,9 +6,11 @@
         <p>{{ post.description }}</p>
         <p>{{ post.text }}</p>
         <small>{{ post.create }}</small>
-        {% if post.updater %}
-            Обновлено {{ post.updater }}
+        {% with post.updater as updater %}
+        {% if updater %}
+            Обновлено {{ updater }}
         {% endif %}
+        {% endwith %}
         <p>
         <span>Категория: {{ post.category.title }}</span>
         </p>
