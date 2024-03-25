@@ -1,5 +1,7 @@
-from django.views.generic import ListView, DetailView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
+from .forms import PostCreateForm, PostUpdateForm
 from .models import Post, Category
 
 
@@ -45,3 +47,36 @@ class PostFromCategoryView(ListView):
         context = super().get_context_data(**kwargs)
         context['title'] = self.category.title
         return context
+
+
+class PostCreateView(CreateView):
+    model = Post
+    template_name = 'blog/post_create.html'
+    form_class = PostCreateForm
+    success_url = reverse_lazy('home')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Добавление статьи'
+        return context
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        form.save()
+        return super().form_valid(form)
+
+
+class PostUpdateView(UpdateView):
+    model = Post
+    form_class = PostUpdateForm
+    template_name = 'blog/post_update.html'
+    context_object_name = 'post'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = f'Обновление статьи {self.object.title}'
+        return context
+
+    def form_valid(self, form):
+        form.instance.updater = self.request.user
+        return super().form_valid(form)

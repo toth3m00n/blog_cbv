@@ -6,6 +6,14 @@
         <p>{{ post.description }}</p>
         <p>{{ post.text }}</p>
         <small>{{ post.create }}</small>
+        {% if post.updater %}
+            Обновлено {{ post.updater }}
+        {% endif %}
+        <p>
+        <span>Категория: {{ post.category.title }}</span>
+        </p>
         <hr>
-        <span>{{ post.category.title }}</span>
+        <p>
+         <a href="{% url 'post_update' slug=post.slug %}" class="btn btn-sm btn-dark"> Редактировать статью </a>
+        </p>
 {% endblock %}

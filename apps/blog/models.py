@@ -12,7 +12,7 @@ from apps.services.utils import unique_slugify
 
 class PostManager(models.Manager):
     def get_queryset(self):
-        return super().get_queryset().select_related('author', 'category').filter(status='published')
+        return super().get_queryset().select_related('author', 'category', 'updater', ).filter(status='published')
 
 
 class Post(models.Model):
@@ -31,7 +31,8 @@ class Post(models.Model):
     text = models.TextField(verbose_name='Полный текст записи')
     category = TreeForeignKey('Category', on_delete=models.PROTECT, related_name='posts', verbose_name='Категория')
 
-    thumbnail = models.ImageField(default='default.jpg',
+    thumbnail = models.ImageField(
+        default='images/thumbnails/default.png',
         verbose_name='Изображение записи',
         blank=True,
         upload_to='images/thumbnails/%Y/%m/',
