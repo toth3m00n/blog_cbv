@@ -1,8 +1,11 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
 from .forms import PostCreateForm, PostUpdateForm
 from .models import Post, Category
+from ..services.mixins import AuthorRequiredMixin
 
 
 class PostListView(ListView):
@@ -49,11 +52,12 @@ class PostFromCategoryView(ListView):
         return context
 
 
-class PostCreateView(CreateView):
+class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     template_name = 'blog/post_create.html'
     form_class = PostCreateForm
     success_url = reverse_lazy('home')
+    login_url = 'home'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -66,11 +70,13 @@ class PostCreateView(CreateView):
         return super().form_valid(form)
 
 
-class PostUpdateView(UpdateView):
+class PostUpdateView(AuthorRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Post
     form_class = PostUpdateForm
     template_name = 'blog/post_update.html'
     context_object_name = 'post'
+    login_url = 'home'
+    success_message = 'Запись успешно обновлена'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

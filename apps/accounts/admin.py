@@ -9,3 +9,4 @@ class ProfileAdmin(admin.ModelAdmin):
     list_display_links = ('user', 'slug')
 
 # 123GoGO3 - alisa
+# 123GoGO31 - Cat
