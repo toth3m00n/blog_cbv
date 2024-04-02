@@ -44,8 +44,22 @@ INSTALLED_APPS = [
     'mptt',
     'django_mptt_admin',
     'debug_toolbar',
-    'apps.accounts'
+    'apps.accounts',
+    'django_recaptcha',
+    'ckeditor_uploader',
+    'ckeditor'
 ]
+
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
+
+CKEDITOR_CONFIGS = {
+    'awesome_ckeditor': {
+        'toolbar': 'full',
+        'height': 300,
+    },
+}
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -131,3 +145,6 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+RECAPTCHA_PUBLIC_KEY = '6LcFIKwpAAAAAGJ6Egn48GFSWrf2CpV2kuKDCacf'
+RECAPTCHA_PRIVATE_KEY = '6LcFIKwpAAAAAHmucX5iEqKFIQMqNxhou_wO-i3Q'
