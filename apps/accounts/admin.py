@@ -10,3 +10,4 @@ class ProfileAdmin(admin.ModelAdmin):
 
 # 123GoGO3 - alisa
 # 123GoGO31 - Cat
+# 23GoGO3y - test_user

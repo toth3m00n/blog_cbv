@@ -1,4 +1,3 @@
-from django.db import models
 from django.urls import reverse
 
 from mptt.models import MPTTModel, TreeForeignKey
@@ -101,3 +100,29 @@ class Category(MPTTModel):
 
     def get_absolute_url(self):
         return reverse('post_by_category', kwargs={'slug': self.slug})
+
+
+class Comment(MPTTModel):
+    STATUS_OPTION = (
+        ('active', 'Активный'),
+        ('not_active', 'Неактивный')
+    )
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments', verbose_name='Запись')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments', verbose_name='Автор комментария')
+    content = models.TextField(verbose_name='Текст комментария', max_length=3000)
+    time_create = models.DateTimeField(auto_now_add=True, verbose_name='Время написания')
+    time_update = models.DateTimeField(auto_now=True, verbose_name='Время обновления')
+    status = models.CharField(choices=STATUS_OPTION, default='active', max_length=20, verbose_name='Статус поста')
+    parent = TreeForeignKey('self', verbose_name='Родительский комментарий', null=True, blank=True,
+                            related_name='children', on_delete=models.CASCADE)
+
+    class MPTTMeta:
+        order_insertion_by = ('-time_create', )
+
+    class Meta:
+        ordering = ['-time_create']
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
+
+    def __str__(self):
+        return f'{self.author} - {self.content}'
