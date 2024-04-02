@@ -103,6 +103,11 @@ class Category(MPTTModel):
         return reverse('post_by_category', kwargs={'slug': self.slug})
 
 
+class CommentManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().select_related('author', 'author__profile')
+
+
 class Comment(MPTTModel):
     STATUS_OPTION = (
         ('active', 'Активный'),
@@ -116,6 +121,8 @@ class Comment(MPTTModel):
     status = models.CharField(choices=STATUS_OPTION, default='active', max_length=20, verbose_name='Статус поста')
     parent = TreeForeignKey('self', verbose_name='Родительский комментарий', null=True, blank=True,
                             related_name='children', on_delete=models.CASCADE)
+
+    objects = CommentManager()
 
     class MPTTMeta:
         order_insertion_by = ('-time_create', )

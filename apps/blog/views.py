@@ -32,6 +32,7 @@ class PostDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['title'] = self.object.title
         context['form'] = CommentCreateForm
+        context['comments_filter'] = Comment.objects.filter(post=self.object, status='active')
         return context
 
 

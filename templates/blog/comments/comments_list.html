@@ -1,6 +1,6 @@
 {% load mptt_tags static %}
 <div class="nested-comments">
-{% recursetree post.comments.all %}
+{% recursetree comments_filter %}
 <ul id="comment-thread-{{ node.pk }}">
     <li class="card border-0">
         <div class="row">
