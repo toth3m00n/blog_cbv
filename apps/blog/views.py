@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import JsonResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
@@ -127,3 +127,25 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
 
     def handle_no_permission(self):
         return JsonResponse({'errors': 'Необходимо авторизоваться для добавления комментариев'}, status=400)
+
+
+def tr_handler404(request, exception):
+    context = {
+        'title': 'Страница не найдена: 404',
+        'error_message': 'К сожалению такая страница была не найдена, или перемещена',
+    }
+    return render(request, 'errors/error_page.html', status=404, context=context)
+
+
+def tr_handler500(request):
+    return render(request=request, template_name='errors/error_page.html', status=500, context={
+        'title': 'Ошибка сервера: 500',
+        'error_message': 'Внутренняя ошибка сайта, вернитесь на главную страницу, отчет об ошибке мы направим администрации сайта',
+    })
+
+
+def tr_handler403(request, exception):
+    return render(request=request, template_name='errors/error_page.html', status=403, context={
+        'title': 'Ошибка доступа: 403',
+        'error_message': 'Доступ к этой странице ограничен',
+    })
