@@ -33,11 +33,10 @@ class PostUpdateForm(PostCreateForm):
 
 
 class CommentCreateForm(forms.ModelForm):
-    recaptcha = ReCaptchaField()
     parent = forms.IntegerField(widget=forms.HiddenInput, required=False)
     content = forms.CharField(label='', widget=forms.Textarea(attrs={"rows": 5, "cols": 30, "placeholder": "Комментарий",
                                                            "class": "form-control"}))
 
     class Meta:
         model = Comment
-        fields = ('content', 'recaptcha')
+        fields = ('content',)

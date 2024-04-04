@@ -22,9 +22,11 @@
             </div>
         </div>
     </li>
-     {% if not node.is_leaf_node %}
-        {{ children }}
-     {% endif %}
+                {% if not node.is_leaf_node %}
+                    <ul>
+                {% endif %}
+            {{ children }}
+            {% if not node.is_leaf_node %}</ul>{% endif %}
 </ul>
 {% endrecursetree %}
 </div>

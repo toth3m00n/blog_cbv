@@ -123,7 +123,6 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
                 'get_absolute_url': comment.author.profile.get_absolute_url()
             }, status=200)
 
-        print('no ajax')
         return redirect(comment.post.get_absolute_url())
 
     def handle_no_permission(self):
